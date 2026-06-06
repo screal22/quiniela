@@ -81,10 +81,10 @@ with st.container(border=True):
 
     dict_resultados = utils.carga_dict_resultados('./static/sql/partidos_con_resultados.sql')
     partido_interes = st.selectbox('Consulta los resultados por partido', dict_resultados.keys(), placeholder='Selecciona una opción')
-    st.markdown(f'**Resultado del partido: {dict_resultados[partido_interes]}**')
     
     if len(utils.carga_resultado_partido('./static/sql/detalle_puntos.sql', partido_interes)) > 0:
         # TODO Incluir formato colores puntos
+        st.markdown(f'**Resultado del partido: {dict_resultados[partido_interes]}**')
         st.dataframe(utils.carga_resultado_partido('./static/sql/detalle_puntos.sql', partido_interes), hide_index=True)
     else:
         st.markdown(f':red[**Sin resultados por mostrar**]')

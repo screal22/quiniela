@@ -1,0 +1,21 @@
+id_partido,pronostico_1,pronostico_2,participante
+PAR-001,1,0,Santiago Chavez
+PAR-002,0,3,Santiago Chavez
+PAR-003,,1,Santiago Chavez
+PAR-004,2,0,Santiago Chavez
+PAR-001,1,1,Daniel Alonso
+PAR-002,1,2,Daniel Alonso
+PAR-003,0,2,Daniel Alonso
+PAR-004,2,2,Daniel Alonso
+PAR-001,3,0,Arturo Olivares
+PAR-002,3,3,Arturo Olivares
+PAR-003,0,3,Arturo Olivares
+PAR-004,1,0,Arturo Olivares
+PAR-001,3,0,Javier Román
+PAR-002,1,3,Javier Román
+PAR-003,2,1,Javier Román
+PAR-004,3,3,Javier Román
+PAR-001,2,2,David Contreras
+PAR-002,1,2,David Contreras
+PAR-003,2,0,David Contreras
+PAR-004,3,0,David Contreras

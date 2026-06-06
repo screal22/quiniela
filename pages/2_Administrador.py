@@ -73,7 +73,7 @@ if st.session_state['login_admin']:
         # =====================================
 
         partido_interes = st.selectbox(
-            'Consulta los resultados por partido',
+            'Carga los resultados de los partidos',
             options=list(dict_partidos.keys()),
             format_func=lambda x: dict_partidos[x],
             placeholder='Selecciona una opción'

@@ -7,10 +7,10 @@ with puntos as (
 		   pr.pronostico_2,
 		   pr.added_date at TIME zone 'America/Mexico_City' as alta_pronostico,
 		   pr.participante
-	from partidos p
-	left join resultados_partidos r
+	from postgres.public.partidos p
+	left join postgres.public.resultados_partidos r
 		on p.id = r.id_partido
-	left join pronosticos pr
+	left join postgres.public.pronosticos pr
 		on p.id = pr.id_partido
 	where r.resultado_1 >= 0
 	),

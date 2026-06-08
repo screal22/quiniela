@@ -47,7 +47,7 @@ with st.container(border=True):
     df_partidos_hoy = utils.ejecutar_query_sql('./static/sql/partidos_hoy.sql')
     
     # Configuración del layout
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
 
     with col1:
         st.markdown('#### **Partidos del día**')
@@ -66,6 +66,16 @@ with st.container(border=True):
                 st.markdown(f':red[**Sin partidos programados**]')
     
     with col2:
+        st.markdown('#### **Participantes**')
+        with st.container(border=True):
+            participantes = utils.ejecutar_query_sql('./static/sql/participantes.sql')['count'][0]
+
+            if participantes:
+                st.success(participantes)
+            else:
+                st.error(0)
+
+    with col3:
         st.markdown('#### **Resultados pendientes por subir**')
         with st.container(border=True):
             resultados_pendientes = len(utils.ejecutar_query_sql('./static/sql/resultados_pendientes.sql'))

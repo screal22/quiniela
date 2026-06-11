@@ -1,6 +1,7 @@
 import pandas as pd
 import uuid
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from database.connection import SessionLocal
 from database.models import Pronosticos, ResultadosPartidos, Partidos
@@ -145,7 +146,12 @@ def guardar_pronosticos(df_pronosticos):
             for p in db.query(Partidos).all()
         }
 
-        fecha_actual = datetime.now()
+        # Hora actual en la zona de México para comparar contra fecha_partido
+        # (la hora límite de carga). El servidor de Streamlit corre en UTC, por
+        # lo que datetime.now() sin zona adelantaría el candado ~6 h.
+        fecha_actual = datetime.now(
+            ZoneInfo('America/Mexico_City')
+        ).replace(tzinfo=None)
 
         partidos_bloqueados = []
         registros_validos = []

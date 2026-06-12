@@ -1,120 +1,9 @@
-import pandas as pd
 import uuid
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from database.connection import SessionLocal
 from database.models import Pronosticos, ResultadosPartidos, Partidos
-
-
-# def guardar_pronosticos(df_pronosticos):
-
-#     db = SessionLocal()
-
-#     try:
-
-#         # =====================================
-#         # LIMPIEZA
-#         # =====================================
-
-#         df_pronosticos[
-#             ['pronostico_1', 'pronostico_2']
-#         ] = (
-#             df_pronosticos[
-#                 ['pronostico_1', 'pronostico_2']
-#             ]
-#             .fillna(-1)
-#             .astype(int)
-#         )
-
-#         # =====================================
-#         # UPSERT
-#         # =====================================
-
-#         for _, row in df_pronosticos.iterrows():
-
-#             pronostico_existente = (
-
-#                 db.query(Pronosticos)
-
-#                 .filter(
-#                     Pronosticos.participante
-#                     == row['participante']
-#                 )
-
-#                 .filter(
-#                     Pronosticos.id_partido
-#                     == row['id_partido']
-#                 )
-
-#                 .first()
-#             )
-
-#             # ===============================
-#             # UPDATE
-#             # ===============================
-
-#             if pronostico_existente:
-
-#                 pronostico_existente.pronostico_1 = (
-#                     row['pronostico_1']
-#                 )
-
-#                 pronostico_existente.pronostico_2 = (
-#                     row['pronostico_2']
-#                 )
-
-#             # ===============================
-#             # INSERT
-#             # ===============================
-
-#             else:
-
-#                 nuevo_pronostico = Pronosticos(
-
-#                     id=uuid.uuid4(),
-
-#                     participante=row[
-#                         'participante'
-#                     ],
-
-#                     id_partido=row[
-#                         'id_partido'
-#                     ],
-
-#                     pronostico_1=row[
-#                         'pronostico_1'
-#                     ],
-
-#                     pronostico_2=row[
-#                         'pronostico_2'
-#                     ]
-#                 )
-
-#                 db.add(
-#                     nuevo_pronostico
-#                 )
-
-#         db.commit()
-
-#         return {
-#             'success': True,
-#             'message': '''
-#                 Pronósticos guardados correctamente
-#             '''
-#         }
-
-#     except Exception as e:
-
-#         db.rollback()
-
-#         return {
-#             'success': False,
-#             'message': str(e)
-#         }
-
-#     finally:
-
-#         db.close()
 
 def guardar_pronosticos(df_pronosticos):
 
@@ -145,7 +34,12 @@ def guardar_pronosticos(df_pronosticos):
             for p in db.query(Partidos).all()
         }
 
-        fecha_actual = datetime.now()
+        # Hora actual en la zona de México para comparar contra fecha_partido
+        # (la hora límite de carga). El servidor de Streamlit corre en UTC, por
+        # lo que datetime.now() sin zona adelantaría el candado ~6 h.
+        fecha_actual = datetime.now(
+            ZoneInfo('America/Mexico_City')
+            ).replace(tzinfo=None)
 
         partidos_bloqueados = []
         registros_validos = []

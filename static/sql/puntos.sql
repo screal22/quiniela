@@ -5,7 +5,7 @@ with puntos as (
 		   r.resultado_2,
 		   pr.pronostico_1,
 		   pr.pronostico_2,
-		   pr.added_date at TIME zone 'America/Mexico_City' as alta_pronostico,
+		   pr.added_date - INTERVAL '6 hours' as alta_pronostico,
 		   pr.participante
 	from postgres.public.partidos p
 	left join postgres.public.resultados_partidos r

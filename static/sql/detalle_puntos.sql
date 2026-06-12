@@ -12,11 +12,12 @@ with puntos as (
 		on p.id = r.id_partido
 	left join postgres.public.pronosticos pr
 		on p.id = pr.id_partido
-	where r.resultado_1 >= 0
+	-- where r.resultado_1 >= 0
 	),
 puntos_2 as (
 	select *,
 		   case
+		   	when resultado_1 is null then 0
 		   	when (fecha_partido >= alta_pronostico) = False then 0
 		   	when (pronostico_1 = -1) or (pronostico_2 = -1) then 0
 		   	when resultado_1 = pronostico_1 and resultado_2 = pronostico_2 then 3

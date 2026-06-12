@@ -1,6 +1,5 @@
 # LIBRERÍAS
 import streamlit as st
-import pandas as pd
 from scripts import utils
 from services import alta_registros
 from dotenv import load_dotenv
@@ -35,12 +34,12 @@ with st.container(border=True):
         with col1:
             # TABLA GENERAL
             st.markdown('#### **Tabla general**')
-            st.bar_chart(utils.ejecutar_query_sql('./static/sql/puntos.sql'), x='total_puntos', y='participante', sort='total_puntos')
+            st.bar_chart(utils.ejecutar_query_sql('./static/sql/puntos.sql'), x='total_puntos', y='participante')
         
         with col2:
             # MARCADORES EXACTOS
             st.markdown('#### **Marcadores exactos**')
-            st.bar_chart(utils.ejecutar_query_sql('./static/sql/puntos.sql'), x='total_aciertos', y='participante', sort='total_puntos')
+            st.bar_chart(utils.ejecutar_query_sql('./static/sql/puntos.sql'), x='total_aciertos', y='participante')
 
 
     # PARTIDOS DEL DÍA
@@ -76,7 +75,7 @@ with st.container(border=True):
                 st.error(0)
 
     with col3:
-        st.markdown('#### **Resultados pendientes por subir**')
+        st.markdown('#### **Resultados por subir**')
         with st.container(border=True):
             resultados_pendientes = len(utils.ejecutar_query_sql('./static/sql/resultados_pendientes.sql'))
 

@@ -12,7 +12,6 @@ with puntos as (
 		on p.id = r.id_partido
 	left join postgres.public.pronosticos pr
 		on p.id = pr.id_partido
-	-- where r.resultado_1 >= 0
 	),
 puntos_2 as (
 	select *,

@@ -22,7 +22,7 @@ puntos_2 as (
 		   	when resultado_1 = pronostico_1 and resultado_2 = pronostico_2 then 3
 		   	when (resultado_1 > resultado_2 and pronostico_1 > pronostico_2)
 			   or (resultado_2 > resultado_1 and pronostico_2 > pronostico_1)
-			   or (resultado_1 = resultado_2 and pronostico_1 = pronostico_2) then 1then 1
+			   or (resultado_1 = resultado_2 and pronostico_1 = pronostico_2) then 1
 			else 0   
 		   end as total_puntos
 	from puntos

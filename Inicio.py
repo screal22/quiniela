@@ -58,7 +58,7 @@ La asignación de puntos se realizará de la siguiente manera:
 
 ### ⚽ Reglas para fases eliminatorias
 
-A partir de los **octavos de final**, si un partido llega a penales:
+A partir de los **Dieciseisavos**, si un partido llega a penales:
 
 - El marcador considerado será el resultado al finalizar el **tiempo extra**.
 - La tanda de penales **no contará** para la asignación de puntos.

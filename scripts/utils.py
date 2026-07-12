@@ -96,6 +96,9 @@ def carga_resultado_partido(path_sql, partido_interes):
     df = ejecutar_query_sql(path_sql)
     df = df[df['nom_partido'] == partido_interes].reset_index(drop=True)
 
+    df['pronostico_1'] = df['pronostico_1'].astype(int)
+    df['pronostico_2'] = df['pronostico_2'].astype(int)
+
     df['pronostico_completo'] = np.where(np.logical_or(df['pronostico_1'] == -1, df['pronostico_2'] == -1), 'Sin resultado', df['pronostico_1'].astype(str) + ' - ' + df['pronostico_2'].astype(str))
     return df[['participante','pronostico_completo','total_puntos']]
 

@@ -5,9 +5,6 @@ import os
 from database.connection import engine
 import pandas as pd
 import numpy as np
-import psycopg2
-import psycopg2.extras
-import uuid
 
 load_dotenv()
 USER_USER = os.getenv('USER_USER')
@@ -125,63 +122,3 @@ def validacion_pronosticos(uploaded_file):
 
     return df_pronosticos_final
 
-def limpiar_valor(v):
-    MAX_BIGINT = 9223372036854775807
-    MAX_VARCHAR = 1000  # Ajustable si tus columnas VARCHAR son más grandes
-    
-    if pd.isna(v):
-        return None
-    elif isinstance(v, uuid.UUID):
-        return str(v)
-    elif isinstance(v, (np.integer, int, float)):
-        try:
-            v = int(v)
-            return min(v, MAX_BIGINT)
-        except:
-            return 0
-    elif isinstance(v, str):
-        return v[:MAX_VARCHAR] if len(v) > MAX_VARCHAR else v
-    elif isinstance(v, np.generic):
-        return v.item()
-    return v
-
-def cargar_bd(secret, nombre_tabla, df, query, borrar_tabla=True, borrar_partition=False):
-    
-    def generar_tuplas(df):
-        for row in df.itertuples(index=False, name=None):
-            yield tuple(limpiar_valor(x) for x in row)
-    
-    try:
-        conn = psycopg2.connect(
-            host=secret['host'],
-            port=secret['port'],
-            database=secret['dbname'],
-            user=secret['username'],
-            password=secret['password']
-        )
-
-        with conn.cursor() as cur:
-            
-            # Borramos la información dela tabla completa o de una partition (año) específica
-            if borrar_tabla:
-                if borrar_partition:
-                    cur.execute(f"DELETE FROM {nombre_tabla} WHERE partition_0 in ('{borrar_partition}');")
-                else:
-                   cur.execute(f"DELETE FROM {nombre_tabla};") 
-
-            # Carga optimizada
-            psycopg2.extras.execute_values(
-                cur,
-                query,
-                generar_tuplas(df),
-                page_size=10000
-            )
-
-        conn.commit()
-        conn.close()
-        print(f"✅ Se ha cargado exitosamente la información a {nombre_tabla}")
-
-    except Exception as e:
-        print(f"❌ Error al cargar la información en {nombre_tabla}: {e}")
-
-    return None
